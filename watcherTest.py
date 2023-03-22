@@ -28,7 +28,7 @@ def isMatch(s: str, p: str) -> bool:
         return bool(dp[-1][-1])
 
 def firstMissingPositive(nums):
-    res = 1
+    # res = 1
     for i in range(len(nums)):
         while 0 <= nums[i]-1 < len(nums) and nums[nums[i]-1] != nums[i]:
             tmp = nums[i]-1
@@ -36,10 +36,9 @@ def firstMissingPositive(nums):
     for i in range(len(nums)):
         if nums[i] != i+1:
             return i+1
-        
-    res = len(nums)+1
-    return res
-
+    
+    return len(nums)+1
+    # res = len(nums)+1
 
 
 def show_trace(frame, event, arg):
@@ -47,9 +46,10 @@ def show_trace(frame, event, arg):
     code = frame.f_code
     offset = frame.f_lasti
     
-    print(f"| {event:10} | {str(arg):>4} |", end=' ')
-    print(f"{frame.f_lineno:>4} | {frame.f_lasti:>6} |", end=' ')
-    print(f"{opcode.opname[code.co_code[offset]]:<18} | {str(frame.f_locals):<35} |")
+    if event == 'line':
+        print(f"| {event:10} | {str(arg):>4} |", end=' ')
+        print(f"{frame.f_lineno:>4} | {frame.f_lasti:>6} |", end=' ')
+        print(f"{opcode.opname[code.co_code[offset]]:<18} | {str(frame.f_locals):<35} |")
     return show_trace
 
 header = f"| {'event':10} | {'arg':>4} | line | offset | {'opcode':^18} | {'locals':^35} |"
