@@ -55,14 +55,13 @@ def test(j):
         j = i + j
     return j
 
-def createCSV():
+def createCSV(functionCallString):
     with open ('algoData.csv', 'w', newline='') as f:
         writer = csv.writer(f)
         writer.writerow(['event', 'arg', 'line', 'offset', 'opcode', 'locals'])
 
     sys.settrace(show_trace)
-    exec("isMatch('aa', 'a*')")
+    exec(functionCallString)
     sys.settrace(None)
     
-createCSV()
 

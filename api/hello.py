@@ -12,7 +12,8 @@ def submit():
     if request.method == 'POST':
         data = request.get_json()
         print(data['test'])
-        createCSV()
+        functionCall = "isMatch('aa', 'a*')"
+        createCSV(functionCall)
         return jsonify(data)
 
     return 'Submit'
