@@ -49,13 +49,19 @@ with open ('algoData.csv', 'w', newline='') as f:
 # isMatch("aa", "a*")
 # sys.settrace(None)
 
+def test(j):
+    n = 10
+    for i in range(1, n):
+        j = i + j
+    return j
+
 def createCSV():
     with open ('algoData.csv', 'w', newline='') as f:
         writer = csv.writer(f)
         writer.writerow(['event', 'arg', 'line', 'offset', 'opcode', 'locals'])
 
     sys.settrace(show_trace)
-    isMatch("aa", "a*")
+    exec("isMatch('aa', 'a*')")
     sys.settrace(None)
     
 createCSV()
