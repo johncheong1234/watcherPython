@@ -44,8 +44,19 @@ with open ('algoData.csv', 'w', newline='') as f:
     writer.writerow(['event', 'arg', 'line', 'offset', 'opcode', 'locals'])
 
 
-print(header)
-sys.settrace(show_trace)
-isMatch("aa", "a*")
-sys.settrace(None)
+# print(header)
+# sys.settrace(show_trace)
+# isMatch("aa", "a*")
+# sys.settrace(None)
+
+def createCSV():
+    with open ('algoData.csv', 'w', newline='') as f:
+        writer = csv.writer(f)
+        writer.writerow(['event', 'arg', 'line', 'offset', 'opcode', 'locals'])
+
+    sys.settrace(show_trace)
+    isMatch("aa", "a*")
+    sys.settrace(None)
+    
+createCSV()
 

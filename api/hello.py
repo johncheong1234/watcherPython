@@ -1,4 +1,5 @@
 from flask import Flask, request, jsonify
+from createCSV import createCSV
 app = Flask(__name__)
 
 @app.route('/')
@@ -11,6 +12,7 @@ def submit():
     if request.method == 'POST':
         data = request.get_json()
         print(data['test'])
+        createCSV()
         return jsonify(data)
 
     return 'Submit'
