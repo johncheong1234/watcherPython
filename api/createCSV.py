@@ -3,25 +3,7 @@ import sys
 import csv
 import uuid
 from typing import List
-
-# def isMatch(s: str, p: str) -> bool:
-#         s, p = ' '+ s, ' '+ p
-#         lenS, lenP = len(s), len(p)
-#         dp = [[0]*(lenP) for i in range(lenS)]
-#         dp[0][0] = 1
-
-#         for j in range(1, lenP):
-#             if p[j] == '*':
-#                 dp[0][j] = dp[0][j-2]
-
-#         for i in range(1, lenS):
-#             for j in range(1, lenP):
-#                 if p[j] in {s[i], '.'}:
-#                     dp[i][j] = dp[i-1][j-1]
-#                 elif p[j] == "*":
-#                     dp[i][j] = dp[i][j-2] or int(dp[i-1][j] and p[j-1] in {s[i], '.'})
-
-#         return bool(dp[-1][-1])
+from fucky import Solution
 
 randomId = uuid.uuid4()
 csvFileName = 'algoData' + str(randomId) + '.csv'
@@ -36,10 +18,16 @@ def show_trace(frame, event, arg):
     # print(f"{opcode.opname[code.co_code[offset]]:<18} | {str(frame.f_locals):<35} |")
     # loop through frame.f_locals and print them out:
     localObjects = {}
-    for key, value in frame.f_locals.items():
-        print(f"{key}: {value}")
-        if isinstance(value, (int, float, complex, str, bool, list, tuple, set, dict)):
-            localObjects[key] = value
+    # for key, value in frame.f_locals.items():
+
+    #     # implement try catch
+    #     try :
+    #         print(key, value)
+    #         if isinstance(value, (int, float, complex, str, bool, list, tuple, set, dict, frozenset)):
+    #             localObjects[key] = value
+    #     except:
+    #         pass
+        
 
     with open (csvFileName, 'a', newline='') as f:
         writer = csv.writer(f)
@@ -62,42 +50,8 @@ def createCSV(functionCallString):
         writer.writerow(['event', 'arg', 'line', 'offset', 'opcode', 'locals', 'localObjects'])
 
     sys.settrace(show_trace)
-    # exec(functionCallString)
-#     functionCallString = """
-# class Solution:
-#     def isMatch(self, s: str, p: str) -> bool:
-#         cache = {}
-#         def rec(s_index, p_index):
-#             if (s_index, p_index) in cache: 
-#                 return cache[(s_index, p_index)]
-            
-#             if s_index >= len(s) and p_index >= len(p): 
-#                 cache[(s_index, p_index)] = True
-#                 return cache[(s_index, p_index)]
-            
-#             if p_index >= len(p): 
-#                 cache[(s_index, p_index)] = False
-#                 return cache[(s_index, p_index)]
-            
-#             match = (s_index < len(s) and p[p_index] in {s[s_index], '.'} )
-            
-#             if p_index + 1 <len(p) and p[p_index +1] == '*':                
-#                 cache[s_index, p_index] = rec(s_index, p_index + 2) or (match and rec(s_index + 1, p_index))               
-#                 return cache[s_index, p_index]
-            
-#             if match:
-#                 cache[s_index, p_index] = rec(s_index + 1, p_index+1)
-#                 return cache[s_index, p_index]
-            
-#             cache[s_index, p_index] = False
-#             return cache[s_index, p_index]
-        
-#         return rec(0, 0)
-
-# solution = Solution()
-# solution.isMatch("aa", "a*")
-#     """
-    exec(functionCallString)
+    solution = Solution()
+    exec('solution.solveNQueens(4)')
     sys.settrace(None)
     return csvFileName
     
