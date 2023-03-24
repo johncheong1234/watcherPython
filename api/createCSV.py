@@ -18,15 +18,15 @@ def show_trace(frame, event, arg):
     # print(f"{opcode.opname[code.co_code[offset]]:<18} | {str(frame.f_locals):<35} |")
     # loop through frame.f_locals and print them out:
     localObjects = {}
-    # for key, value in frame.f_locals.items():
+    for key, value in frame.f_locals.items():
 
-    #     # implement try catch
-    #     try :
-    #         print(key, value)
-    #         if isinstance(value, (int, float, complex, str, bool, list, tuple, set, dict, frozenset)):
-    #             localObjects[key] = value
-    #     except:
-    #         pass
+        # implement try catch
+        try :
+            print(key, value)
+            if isinstance(value, (int, float, complex, str, bool, list, tuple, set, dict, frozenset)):
+                localObjects[key] = value
+        except:
+            pass
         
 
     with open (csvFileName, 'a', newline='') as f:
