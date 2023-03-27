@@ -36,12 +36,12 @@ def submit():
             for row in reader:
                 # check if the line number is valid
                 if 1<int(row['line']) < len(codeLines):
-                    codeLinePrior = codeLines[int(row['line'])-2]
-                    codeLineAt = codeLines[int(row['line'])-1]
+                    codeLinePrior = codeLines[int(row['line'])-3]
+                    codeLineAt = codeLines[int(row['line'])-2]
                     row['codeLineAt'] = codeLineAt
                     row['codeLinePrior'] = codeLinePrior
                     # convert row['localObjects'] string to dict
-                    row['localObjects'] = json.loads(p.sub('\"', row['localObjects']))
+                    # row['localObjects'] = json.loads(p.sub('\"', row['localObjects']))
                 visualList.append(row)
         
         # if(len(visualList) >0):

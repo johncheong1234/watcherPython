@@ -1,17 +1,21 @@
 from typing import List 
 class Solution:
     def isMatch(self, s, p):
-        dp = [[False for _ in range(len(p)+1)] for i in range(len(s)+1)]
-        dp[0][0] = True
-        for j in range(1, len(p)+1):
-            if p[j-1] != '*':
-                break
-            dp[0][j] = True
-                
-        for i in range(1, len(s)+1):
-            for j in range(1, len(p)+1):
-                if p[j-1] in {s[i-1], '?'}:
-                    dp[i][j] = dp[i-1][j-1]
-                elif p[j-1] == '*':
-                    dp[i][j] = dp[i-1][j] or dp[i][j-1]
-        return dp[-1][-1]
+        sn, pn = len(s), len(p)
+        si = pi = 0
+        save_si, save_pi = None, None
+        while si < sn:
+            if pi < pn and (p[pi] == '?' or p[pi] == s[si]):
+                si += 1
+                pi += 1
+            elif pi < pn and p[pi] == '*':
+                # Meet "*", save si and pi, searching for next character
+                save_si, save_pi = si + 1, pi
+                pi += 1
+            elif save_pi is not None:
+                # Dead end, restore si and pi, carry on.
+                si, pi = save_si, save_pi
+            else:
+                return False
+        # Check trailing "*"
+        return p[pi:].count("*") == pn - pi
