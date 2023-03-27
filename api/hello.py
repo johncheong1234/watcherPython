@@ -35,7 +35,7 @@ def submit():
             reader = csv.DictReader(f)
             for row in reader:
                 # check if the line number is valid
-                if 1<int(row['line']) < len(codeLines):
+                if 2<int(row['line']) < len(codeLines)+3:
                     codeLinePrior = codeLines[int(row['line'])-3]
                     codeLineAt = codeLines[int(row['line'])-2]
                     row['codeLineAt'] = codeLineAt
