@@ -22,7 +22,7 @@ def submit():
             f.write(data['code'])
 
         csvFileName = createCSV(data['functionName'], data['arguments'])
-
+        print('csvFileName is ', csvFileName)
         # break code into lines based on line break
         codeLines = data['code'].splitlines()
         print('codeLines are ', codeLines)
@@ -38,8 +38,8 @@ def submit():
                     row['codeLinePrior'] = codeLinePrior
                 visualList.append(row)
         
-        if(len(visualList) >0):
-            os.remove(csvFileName)
+        # if(len(visualList) >0):
+        #     os.remove(csvFileName)
         return {'visualList': visualList}
 
 

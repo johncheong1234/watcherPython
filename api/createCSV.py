@@ -13,9 +13,9 @@ def show_trace(frame, event, arg):
     code = frame.f_code
     offset = frame.f_lasti
     
-    # print(f"| {event:10} | {str(arg):>4} |", end=' ')
-    # print(f"{frame.f_lineno:>4} | {frame.f_lasti:>6} |", end=' ')
-    # print(f"{opcode.opname[code.co_code[offset]]:<18} | {str(frame.f_locals):<35} |")
+    print(f"| {event:10} | {str(arg):>4} |", end=' ')
+    print(f"{frame.f_lineno:>4} | {frame.f_lasti:>6} |", end=' ')
+    print(f"{opcode.opname[code.co_code[offset]]:<18} | {str(frame.f_locals):<35} |")
     # loop through frame.f_locals and print them out:
     localObjects = {}
     for key, value in frame.f_locals.items():
@@ -46,7 +46,9 @@ def test(j):
 def createCSV(functionCallString, arguments):
     argumentString = ''
     for argument in arguments:
-        argumentString += str(argument['input']) + ','
+        argumentString += str(argument['input'])
+        if argument != arguments[-1]:
+            argumentString += ','
     #generate a random ID for the csv file
     with open (csvFileName, 'w', newline='') as f:
         writer = csv.writer(f)
