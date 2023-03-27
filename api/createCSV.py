@@ -4,6 +4,7 @@ import csv
 import uuid
 from typing import List
 from fucky import Solution
+import json
 
 randomId = uuid.uuid4()
 csvFileName = 'algoData' + str(randomId) + '.csv'
@@ -31,6 +32,8 @@ def show_trace(frame, event, arg):
 
     with open (csvFileName, 'a', newline='') as f:
         writer = csv.writer(f)
+        # make sure localObjects is saved as a string that can be converted to json
+        localObjects = json.dumps(localObjects)
         writer.writerow([event, arg, frame.f_lineno, frame.f_lasti, opcode.opname[code.co_code[offset]], frame.f_locals, localObjects])
 
     return show_trace

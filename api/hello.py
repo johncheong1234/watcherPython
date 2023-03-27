@@ -3,6 +3,10 @@ from createCSV import createCSV
 from flask_cors import CORS
 import csv
 import os
+import json
+import re
+
+p = re.compile('(?<!\\\\)\'')
 
 app = Flask(__name__)
 CORS(app)
@@ -36,10 +40,13 @@ def submit():
                     codeLineAt = codeLines[int(row['line'])-1]
                     row['codeLineAt'] = codeLineAt
                     row['codeLinePrior'] = codeLinePrior
+                    # convert row['localObjects'] string to dict
+                    row['localObjects'] = json.loads(p.sub('\"', row['localObjects']))
                 visualList.append(row)
         
         # if(len(visualList) >0):
         #     os.remove(csvFileName)
+
         return {'visualList': visualList}
 
 
