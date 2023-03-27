@@ -21,25 +21,25 @@ def submit():
             f.write('from typing import List \n')
             f.write(data['code'])
 
-        csvFileName = createCSV('test')
+        csvFileName = createCSV(data['functionName'], data['arguments'])
 
         # break code into lines based on line break
         codeLines = data['code'].splitlines()
         print('codeLines are ', codeLines)
         visualList = []
-        # with open(csvFileName, 'r') as f:
-        #     reader = csv.DictReader(f)
-        #     for row in reader:
-        #         # check if the line number is valid
-        #         if 1<int(row['line']) < len(codeLines):
-        #             codeLinePrior = codeLines[int(row['line'])-2]
-        #             codeLineAt = codeLines[int(row['line'])-1]
-        #             row['codeLineAt'] = codeLineAt
-        #             row['codeLinePrior'] = codeLinePrior
-        #         visualList.append(row)
+        with open(csvFileName, 'r') as f:
+            reader = csv.DictReader(f)
+            for row in reader:
+                # check if the line number is valid
+                if 1<int(row['line']) < len(codeLines):
+                    codeLinePrior = codeLines[int(row['line'])-2]
+                    codeLineAt = codeLines[int(row['line'])-1]
+                    row['codeLineAt'] = codeLineAt
+                    row['codeLinePrior'] = codeLinePrior
+                visualList.append(row)
         
-        # if(len(visualList) >0):
-        #     os.remove(csvFileName)
+        if(len(visualList) >0):
+            os.remove(csvFileName)
         return {'visualList': visualList}
 
 

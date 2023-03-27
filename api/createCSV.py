@@ -43,7 +43,10 @@ def test(j):
         j = i + j
     return j
 
-def createCSV(functionCallString):
+def createCSV(functionCallString, arguments):
+    argumentString = ''
+    for argument in arguments:
+        argumentString += str(argument['input']) + ','
     #generate a random ID for the csv file
     with open (csvFileName, 'w', newline='') as f:
         writer = csv.writer(f)
@@ -51,7 +54,7 @@ def createCSV(functionCallString):
 
     sys.settrace(show_trace)
     solution = Solution()
-    exec('solution.solveNQueens(4)')
+    exec('solution.'+functionCallString+'('+argumentString+')')
     sys.settrace(None)
     return csvFileName
     

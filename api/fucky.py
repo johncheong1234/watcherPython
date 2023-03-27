@@ -1,29 +1,17 @@
 from typing import List 
 class Solution:
-    def solveNQueens(self, n: int) -> List[List[str]]:
-        def issafe(r,c):
-            n = len(board)
-            for i in range(n):
-                if board[i][c] == 'Q':
-                    return False
-                if r - i >= 0 and c - i >= 0 and board[r-i][c-i] == 'Q':
-                    return False
-                if r - i >= 0 and c + i < n and board[r-i][c+i] == 'Q':
-                    return False
-            return True
+    def isMatch(self, s, p):
+        dp = [[False for _ in range(len(p)+1)] for i in range(len(s)+1)]
+        dp[0][0] = True
+        for j in range(1, len(p)+1):
+            if p[j-1] != '*':
+                break
+            dp[0][j] = True
                 
-        def solve(r):
-            n = len(board)
-            if r == n:
-                print(board)
-                ans.append(["".join(i) for i in board])
-                return 
-            for c in range(0,n):
-                if issafe(r,c):
-                    board[r][c] = 'Q'
-                    solve(r+1)
-                    board[r][c] = '.'
-        board = [['.']*n for i in range(n)]
-        ans =[]
-        solve(0) 
-        return ans
+        for i in range(1, len(s)+1):
+            for j in range(1, len(p)+1):
+                if p[j-1] in {s[i-1], '?'}:
+                    dp[i][j] = dp[i-1][j-1]
+                elif p[j-1] == '*':
+                    dp[i][j] = dp[i-1][j] or dp[i][j-1]
+        return dp[-1][-1]
