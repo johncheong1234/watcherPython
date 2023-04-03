@@ -70,6 +70,8 @@ def submitCp():
         f.write(' \n')
         f.write('with open (csvFileName, \'w\', newline=\'\') as f: \n')
         f.write('    fieldnames = [\'event\', \'arg\', \'line\', \'lasti\', \'opcode\', \'localObjects\'] \n')
+        f.write('    writer = csv.writer(f) \n')
+        f.write('    writer.writerow(fieldnames) \n')
         f.write('def show_trace(frame, event, arg):\n')
         f.write('    frame.f_trace_opcodes = True\n')
         f.write('    code = frame.f_code\n')
@@ -110,8 +112,23 @@ def submitCp():
     # run newFile.py
     os.system('python3 newFile.py')
 
+    visualList = []
+    codeLines = data['code'].splitlines()
+    with open(csvFileName, 'r') as f:
+        reader = csv.DictReader(f)
+        for row in reader:
+            # check if the line number is valid
+            if 2<int(row['line']) < len(codeLines)+3:
+                codeLinePrior = codeLines[int(row['line'])-3]
+                codeLineAt = codeLines[int(row['line'])-2]
+                row['codeLineAt'] = codeLineAt
+                row['codeLinePrior'] = codeLinePrior
+                # convert row['localObjects'] string to dict
+                # row['localObjects'] = json.loads(p.sub('\"', row['localObjects']))
+            visualList.append(row)
 
-    return data
+
+    return {'visualList': visualList}
 
 if __name__ == '__main__':
     app.run()

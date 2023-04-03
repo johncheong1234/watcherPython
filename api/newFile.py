@@ -4,9 +4,11 @@ import opcode
 import uuid 
 import csv 
 import json 
-csvFileName ="algoData71c11bc3-3e47-4cef-b4e6-777e0ec8f169.csv" 
+csvFileName ="algoData656b770e-506f-4b07-9dbf-113a0fa4bbaf.csv" 
 with open (csvFileName, 'w', newline='') as f: 
     fieldnames = ['event', 'arg', 'line', 'lasti', 'opcode', 'localObjects'] 
+    writer = csv.writer(f) 
+    writer.writerow(fieldnames) 
 def show_trace(frame, event, arg):
     frame.f_trace_opcodes = True
     code = frame.f_code
