@@ -50,5 +50,31 @@ def submit():
         return {'visualList': visualList}
 
 
+@app.route('/submit-cp', methods=['POST'])
+def submitCp():
+    data = request.get_json()
+    
+    # create new python file
+    with open('newFile.py', 'w') as f:
+        
+        f.write('import sys \n')
+        f.write('import io \n')
+        f.write('user_input = "')
+        # split data['testCase'] based on line breaks
+        testCaseSplit = data['testCase'].splitlines()
+        testCaseString = ''
+        # add each line to user_input
+        for line in testCaseSplit:
+            testCaseString += line + '\\n'
+        f.write(testCaseString)
+        f.write('" \n')
+        f.write('saved_stdin = sys.stdin \n')
+        f.write('sys.stdin = io.StringIO(user_input) \n')
+        f.write(data['code'])
+        f.write('\n')
+        f.write('sys.stdin = saved_stdin \n')
+
+    return data
+
 if __name__ == '__main__':
     app.run()

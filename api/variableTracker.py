@@ -30,7 +30,6 @@ def test():
                 if i!=b:
                     print(i,end = " ")
             print(b)
-    
 # Call the function with a simulated input
 user_input = '5\n2 1\n3 2\n1 1\n4 1\n5 3' 
 # The "\n" simulates the user pressing the Enter key
