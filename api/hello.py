@@ -59,6 +59,15 @@ def submitCp():
         
         f.write('import sys \n')
         f.write('import io \n')
+        f.write('import opcode\n')
+        f.write('def show_trace(frame, event, arg):\n')
+        f.write('    frame.f_trace_opcodes = True\n')
+        f.write('    code = frame.f_code\n')
+        f.write('    offset = frame.f_lasti\n')
+        f.write('    print(f"| {event:10} | {str(arg):>4} |", end=\' \')\n')
+        f.write('    print(f"{frame.f_lineno:>4} | {frame.f_lasti:>6} |", end=\' \')\n')
+        f.write('    print(f"{opcode.opname[code.co_code[offset]]:<18} | {str(frame.f_locals):<35} |")\n')
+        f.write('    return show_trace\n')
         f.write('user_input = "')
         # split data['testCase'] based on line breaks
         testCaseSplit = data['testCase'].splitlines()
@@ -70,8 +79,15 @@ def submitCp():
         f.write('" \n')
         f.write('saved_stdin = sys.stdin \n')
         f.write('sys.stdin = io.StringIO(user_input) \n')
-        f.write(data['code'])
+        f.write('sys.settrace(show_trace) \n')
+        # convert data['code'] into a function and write it to file
+        f.write('def newFunction():\n')
+        codeLines = data['code'].splitlines()
+        for line in codeLines:
+            f.write('    ' + line + '\n')
+        f.write('newFunction() \n')
         f.write('\n')
+        f.write('sys.settrace(None) \n')
         f.write('sys.stdin = saved_stdin \n')
 
     return data
