@@ -60,6 +60,12 @@ def submitCp():
         f.write('import sys \n')
         f.write('import io \n')
         f.write('import opcode\n')
+        f.write('import uuid \n')
+        f.write('import csv \n')
+        f.write('import json \n')
+        f.write('csvFileName = "algoData" + str(uuid.uuid4()) + ".csv" \n')
+        f.write('with open (csvFileName, \'w\', newline=\'\') as f: \n')
+        f.write('    fieldnames = [\'event\', \'arg\', \'line\', \'lasti\', \'opcode\', \'localObjects\'] \n')
         f.write('def show_trace(frame, event, arg):\n')
         f.write('    frame.f_trace_opcodes = True\n')
         f.write('    code = frame.f_code\n')
@@ -67,6 +73,13 @@ def submitCp():
         f.write('    print(f"| {event:10} | {str(arg):>4} |", end=\' \')\n')
         f.write('    print(f"{frame.f_lineno:>4} | {frame.f_lasti:>6} |", end=\' \')\n')
         f.write('    print(f"{opcode.opname[code.co_code[offset]]:<18} | {str(frame.f_locals):<35} |")\n')
+        f.write('    localObjects = {} \n')
+        f.write('    for key, value in frame.f_locals.items(): \n')
+        f.write('       localObjects[key] = str(value) \n')
+        f.write('    localObjects = json.dumps(localObjects) \n')
+        f.write('    with open(csvFileName, \'a\', newline=\'\') as f: \n')
+        f.write('       writer = csv.DictWriter(f, fieldnames=fieldnames) \n')
+        f.write('       writer.writerow({\'event\': event, \'arg\': arg, \'line\': frame.f_lineno, \'lasti\': frame.f_lasti, \'opcode\': opcode.opname[code.co_code[offset]], \'localObjects\': localObjects}) \n') 
         f.write('    return show_trace\n')
         f.write('user_input = "')
         # split data['testCase'] based on line breaks
@@ -90,6 +103,8 @@ def submitCp():
         f.write('sys.settrace(None) \n')
         f.write('sys.stdin = saved_stdin \n')
 
+    # run newFile.py
+    os.system('python3 newFile.py')
     return data
 
 if __name__ == '__main__':

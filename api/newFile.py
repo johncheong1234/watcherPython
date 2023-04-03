@@ -1,6 +1,12 @@
 import sys 
 import io 
 import opcode
+import uuid 
+import csv 
+import json 
+csvFileName = "algoData" + str(uuid.uuid4()) + ".csv" 
+with open (csvFileName, 'w', newline='') as f: 
+    fieldnames = ['event', 'arg', 'line', 'lasti', 'opcode', 'localObjects'] 
 def show_trace(frame, event, arg):
     frame.f_trace_opcodes = True
     code = frame.f_code
@@ -8,23 +14,36 @@ def show_trace(frame, event, arg):
     print(f"| {event:10} | {str(arg):>4} |", end=' ')
     print(f"{frame.f_lineno:>4} | {frame.f_lasti:>6} |", end=' ')
     print(f"{opcode.opname[code.co_code[offset]]:<18} | {str(frame.f_locals):<35} |")
+    localObjects = {} 
+    for key, value in frame.f_locals.items(): 
+       localObjects[key] = str(value) 
+    localObjects = json.dumps(localObjects) 
+    with open(csvFileName, 'a', newline='') as f: 
+       writer = csv.DictWriter(f, fieldnames=fieldnames) 
+       writer.writerow({'event': event, 'arg': arg, 'line': frame.f_lineno, 'lasti': frame.f_lasti, 'opcode': opcode.opname[code.co_code[offset]], 'localObjects': localObjects}) 
     return show_trace
-user_input = "2\n3 2\n5 3\n" 
+user_input = "4\n1 1\n3 2\n4 1\n5 3\n" 
 saved_stdin = sys.stdin 
 sys.stdin = io.StringIO(user_input) 
 sys.settrace(show_trace) 
 def newFunction():
-    for _ in range(int(input())):
-        a,b = map(int,input().split())
-        if (a==1 and b==1):
-            print(1)
-        elif (b==1 and a!=1):
-            print(-1)
+    # cook your code here
+    # cook your code here
+    for _t in range(int(input())):
+        n,k = map(int, input().split(" "))
+        result = []
+        if n>1 and k==1:
+            print ("-1")
         else:
-             for i in range(1,a+1):
-                 if i!=b:
-                     print(i,end = " ")
-             print(b)
+            for i in range(n):
+                result.append(i+1)
+            dis = n-k
+            result[n-1], result[k-1] = result[k-1], result[n-1]
+            output = ""
+            for _x in result:
+                output += str(_x) + " "
+            print (output[:len(output)-1])
+            
 newFunction() 
 
 sys.settrace(None) 
