@@ -1,21 +1,23 @@
 from typing import List 
-class Solution:
-    def isMatch(self, s, p):
-        sn, pn = len(s), len(p)
-        si = pi = 0
-        save_si, save_pi = None, None
-        while si < sn:
-            if pi < pn and (p[pi] == '?' or p[pi] == s[si]):
-                si += 1
-                pi += 1
-            elif pi < pn and p[pi] == '*':
-                # Meet "*", save si and pi, searching for next character
-                save_si, save_pi = si + 1, pi
-                pi += 1
-            elif save_pi is not None:
-                # Dead end, restore si and pi, carry on.
-                si, pi = save_si, save_pi
-            else:
-                return False
-        # Check trailing "*"
-        return p[pi:].count("*") == pn - pi
+class Solution(object):
+    def letterCombinations(self, digits):
+        """
+        :type digits: str
+        :rtype: List[str]
+        """
+        dic = { "2": "abc", "3": "def", "4":"ghi", "5":"jkl", "6":"mno", "7":"pqrs", "8":"tuv", "9":"wxyz"}
+        
+        res=[]
+        if len(digits) ==0:
+            return res
+            
+        self.dfs(digits, 0, dic, '', res)
+        return res
+    
+    def dfs(self, nums, index, dic, path, res):
+        if index >=len(nums):
+            res.append(path)
+            return
+        string1 =dic[nums[index]]
+        for i in string1:
+            self.dfs(nums, index+1, dic, path + i, res)
