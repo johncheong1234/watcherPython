@@ -4,7 +4,7 @@ import opcode
 import uuid 
 import csv 
 import json 
-csvFileName = "algoData" + str(uuid.uuid4()) + ".csv" 
+csvFileName ="algoData71c11bc3-3e47-4cef-b4e6-777e0ec8f169.csv" 
 with open (csvFileName, 'w', newline='') as f: 
     fieldnames = ['event', 'arg', 'line', 'lasti', 'opcode', 'localObjects'] 
 def show_trace(frame, event, arg):

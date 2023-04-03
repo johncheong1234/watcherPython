@@ -5,6 +5,7 @@ import csv
 import os
 import json
 import re
+import uuid 
 
 p = re.compile('(?<!\\\\)\'')
 
@@ -54,6 +55,7 @@ def submit():
 def submitCp():
     data = request.get_json()
     
+    csvFileName = "algoData"+str(uuid.uuid4())+".csv"
     # create new python file
     with open('newFile.py', 'w') as f:
         
@@ -63,7 +65,9 @@ def submitCp():
         f.write('import uuid \n')
         f.write('import csv \n')
         f.write('import json \n')
-        f.write('csvFileName = "algoData" + str(uuid.uuid4()) + ".csv" \n')
+        f.write('csvFileName =')
+        f.write('\"'+csvFileName+'\"')
+        f.write(' \n')
         f.write('with open (csvFileName, \'w\', newline=\'\') as f: \n')
         f.write('    fieldnames = [\'event\', \'arg\', \'line\', \'lasti\', \'opcode\', \'localObjects\'] \n')
         f.write('def show_trace(frame, event, arg):\n')
@@ -105,6 +109,8 @@ def submitCp():
 
     # run newFile.py
     os.system('python3 newFile.py')
+
+
     return data
 
 if __name__ == '__main__':
