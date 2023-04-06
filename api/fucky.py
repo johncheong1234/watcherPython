@@ -1,23 +1,12 @@
 from typing import List 
-class Solution(object):
-    def letterCombinations(self, digits):
-        """
-        :type digits: str
-        :rtype: List[str]
-        """
-        dic = { "2": "abc", "3": "def", "4":"ghi", "5":"jkl", "6":"mno", "7":"pqrs", "8":"tuv", "9":"wxyz"}
-        
-        res=[]
-        if len(digits) ==0:
-            return res
-            
-        self.dfs(digits, 0, dic, '', res)
-        return res
-    
-    def dfs(self, nums, index, dic, path, res):
-        if index >=len(nums):
-            res.append(path)
-            return
-        string1 =dic[nums[index]]
-        for i in string1:
-            self.dfs(nums, index+1, dic, path + i, res)
+class Solution:
+    def firstMissingPositive(self, nums: List[int]) -> int:
+        for i in range(len(nums)):
+            while i+1!=nums[i] and nums[i]>=0 and nums[i]<=len(nums):
+                tmp = nums[nums[i]-1]
+                nums[nums[i]-1] = nums[i]
+                nums[i] = tmp
+        for i in range(len(nums)):
+            if nums[i] != i+1:
+                return i+1
+        return len(nums)

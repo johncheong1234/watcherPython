@@ -118,11 +118,11 @@ def submitCp():
         reader = csv.DictReader(f)
         for row in reader:
             # check if the line number is valid
-            if 2<int(row['line']) < len(codeLines)+3:
-                codeLinePrior = codeLines[int(row['line'])-3]
-                codeLineAt = codeLines[int(row['line'])-2]
+            if 31<int(row['line']):
+                # codeLinePrior = codeLines[int(row['line'])-3]
+                codeLineAt = codeLines[int(row['line'])-32]
                 row['codeLineAt'] = codeLineAt
-                row['codeLinePrior'] = codeLinePrior
+                # row['codeLinePrior'] = codeLinePrior
                 # convert row['localObjects'] string to dict
                 # row['localObjects'] = json.loads(p.sub('\"', row['localObjects']))
             visualList.append(row)
