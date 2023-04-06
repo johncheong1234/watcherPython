@@ -4,7 +4,7 @@ import opcode
 import uuid 
 import csv 
 import json 
-csvFileName ="algoData1fe16a55-a13f-44e1-89e0-fad3644d2e5b.csv" 
+csvFileName ="algoDatadf359898-b884-4de3-8a92-bb900e8ed844.csv" 
 with open (csvFileName, 'w', newline='') as f: 
     fieldnames = ['event', 'arg', 'line', 'lasti', 'opcode', 'localObjects'] 
     writer = csv.writer(f) 
@@ -24,21 +24,31 @@ def show_trace(frame, event, arg):
        writer = csv.DictWriter(f, fieldnames=fieldnames) 
        writer.writerow({'event': event, 'arg': arg, 'line': frame.f_lineno, 'lasti': frame.f_lasti, 'opcode': opcode.opname[code.co_code[offset]], 'localObjects': localObjects}) 
     return show_trace
-user_input = "5\n2\n3\n4\n5\n6\n" 
+user_input = "4\n1 1\n3 2\n4 1\n5 3\n" 
 saved_stdin = sys.stdin 
 sys.stdin = io.StringIO(user_input) 
 sys.settrace(show_trace) 
 def newFunction():
-    for _ in range(int(input())):
-        n = int(input())
-        ans = []
-        for x,y in zip(range (n,n//2-1,-1),range(1,n//2+1)):
-            ans.append(x)
-            ans.append(y)
+    t = int(input())
+    
+    
+    while t > 0:
+        
+        n,k = map(int,input().split())
+        
+        if n == 1 and k == 1:
+            print(1)
+        elif n > 1 and k == 1:
+            print(-1)
         else:
-            if n%2:
-                ans.append(n//2 +1)
-        print(*reversed(ans))
+            for i in range(1,k,1):
+                print(i,end=" ")
+            for i in range(n,k-1,-1):
+                print(i,end=" ")
+            print()
+        
+        t -= 1
+            
 newFunction() 
 
 sys.settrace(None) 
