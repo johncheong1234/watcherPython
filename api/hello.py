@@ -51,7 +51,7 @@ def submit():
         return {'visualList': visualList}
 
 
-@app.route('/submit-cp', methods=['POST'])
+@app.route('/submit-cp', methods=['GET','POST'])
 def submitCp():
     data = request.get_json()
     
