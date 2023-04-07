@@ -58,7 +58,10 @@ def submitCp():
     csvFileName = "algoData"+str(uuid.uuid4())+".csv"
     # create new python file
     with open('newFile.py', 'w') as f:
-        
+        if len(data['importLines']) > 0:
+            for line in data['importLines']:
+                f.write(line)
+                f.write(' \n')
         f.write('import sys \n')
         f.write('import io \n')
         f.write('import opcode\n')
@@ -101,8 +104,8 @@ def submitCp():
         f.write('sys.settrace(show_trace) \n')
         # convert data['code'] into a function and write it to file
         f.write('def newFunction():\n')
-        codeLines = data['code'].splitlines()
-        for line in codeLines:
+        # codeLines = data['code'].splitlines()
+        for line in data['codeLines']:
             f.write('    ' + line + '\n')
         f.write('newFunction() \n')
         f.write('\n')
@@ -113,18 +116,18 @@ def submitCp():
     os.system('python3 newFile.py')
 
     visualList = []
-    codeLines = data['code'].splitlines()
+    codeLines = data['codeLines']
     with open(csvFileName, 'r') as f:
         reader = csv.DictReader(f)
         for row in reader:
             # check if the line number is valid
             if 31<int(row['line']):
-                # codeLinePrior = codeLines[int(row['line'])-3]
-                codeLineAt = codeLines[int(row['line'])-32]
-                row['codeLineAt'] = codeLineAt
-                # row['codeLinePrior'] = codeLinePrior
-                # convert row['localObjects'] string to dict
-                # row['localObjects'] = json.loads(p.sub('\"', row['localObjects']))
+                try:
+                    codeLineAt = codeLines[int(row['line'])-(32+len(data['importLines']))]
+                    row['codeLineAt'] = codeLineAt
+                except:
+                    pass    
+               
             visualList.append(row)
 
 

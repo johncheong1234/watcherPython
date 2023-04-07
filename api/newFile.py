@@ -1,10 +1,11 @@
+import numpy as np  
 import sys 
 import io 
 import opcode
 import uuid 
 import csv 
 import json 
-csvFileName ="algoDatadf359898-b884-4de3-8a92-bb900e8ed844.csv" 
+csvFileName ="algoData1c8f53cc-a5c3-44a4-9073-ad6747b96709.csv" 
 with open (csvFileName, 'w', newline='') as f: 
     fieldnames = ['event', 'arg', 'line', 'lasti', 'opcode', 'localObjects'] 
     writer = csv.writer(f) 
@@ -24,31 +25,23 @@ def show_trace(frame, event, arg):
        writer = csv.DictWriter(f, fieldnames=fieldnames) 
        writer.writerow({'event': event, 'arg': arg, 'line': frame.f_lineno, 'lasti': frame.f_lasti, 'opcode': opcode.opname[code.co_code[offset]], 'localObjects': localObjects}) 
     return show_trace
-user_input = "4\n1 1\n3 2\n4 1\n5 3\n" 
+user_input = "1\n3\n1 2 5\n6 3 4\n2 7 1\n" 
 saved_stdin = sys.stdin 
 sys.stdin = io.StringIO(user_input) 
 sys.settrace(show_trace) 
 def newFunction():
-    t = int(input())
-    
-    
-    while t > 0:
-        
-        n,k = map(int,input().split())
-        
-        if n == 1 and k == 1:
-            print(1)
-        elif n > 1 and k == 1:
-            print(-1)
-        else:
-            for i in range(1,k,1):
-                print(i,end=" ")
-            for i in range(n,k-1,-1):
-                print(i,end=" ")
-            print()
-        
-        t -= 1
-            
+    for _ in range(int(input())):
+        n = int(input())
+        a = []
+        for i in range(n):
+            a.append(list(map(int,input().split())))
+        a = np.array(a)
+        # print(a)
+        sums = [a.trace()]
+        for i in range(1, n):
+            sums.append(a[0:n-i, i:n].trace())
+            sums.append(a[i:n, 0:n-i].trace())
+        print(max(sums))
 newFunction() 
 
 sys.settrace(None) 
